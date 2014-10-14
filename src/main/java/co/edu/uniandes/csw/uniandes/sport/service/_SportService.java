@@ -167,6 +167,12 @@ public static String URL_SERVICIO = System.getenv("URL1");
                 }
 		return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(rta.toJSONString()).build();
 	}
+        
+        @OPTIONS
+        @Path("{id}")
+        public Response cors1(@javax.ws.rs.core.Context HttpHeaders requestHeaders) {
+            return Response.status(200).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept").build();
+        }
 
 	@GET
 	@Path("{id}")
