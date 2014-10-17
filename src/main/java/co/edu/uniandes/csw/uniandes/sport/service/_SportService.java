@@ -33,6 +33,7 @@ package co.edu.uniandes.csw.uniandes.sport.service;
 //import co.edu.uniandes.csw.uniandes.sport.logic.api.ISportLogicService;
 import co.edu.uniandes.csw.uniandes.persistence.PersistenceManager;
 import co.edu.uniandes.csw.uniandes.sport.logic.dto.SportDTO;
+import co.edu.uniandes.csw.uniandes.sport.logic.dto.SportPageDTO;
 import co.edu.uniandes.csw.uniandes.sport.persistence.converter.SportConverter;
 import co.edu.uniandes.csw.uniandes.sport.persistence.entity.SportEntity;
 import co.edu.uniandes.csw.uniandes.user.logic.dto.Login;
@@ -58,6 +59,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -131,14 +133,24 @@ public static String URL_SERVICIO = System.getenv("URL1");
         
         
         @GET
-        public Response getSports() {
+        public Response getSports(@QueryParam("page") Integer page, @QueryParam("maxRecords") Integer maxRecords) {
 
-        Query q = entityManager.createQuery("select u from SportEntity u order by u.name ASC");
-        List<SportDTO> sports = q.getResultList();
-        String json = new Gson().toJson(sports);
-        return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(json).build();
+                Query count = entityManager.createQuery("select count(u) from SportEntity u");
+		Long regCount = 0L;
+		regCount = Long.parseLong(count.getSingleResult().toString());
+		Query q = entityManager.createQuery("select u from SportEntity u");
+		if (page != null && maxRecords != null) {
+		    q.setFirstResult((page-1)*maxRecords);
+		    q.setMaxResults(maxRecords);
+		}
+		SportPageDTO response = new SportPageDTO();
+		response.setTotalRecords(regCount);
+		response.setRecords(SportConverter.entity2PersistenceDTOList(q.getResultList()));
+                String json = new Gson().toJson(response);
+                return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(json).build();
         
     }
+        
 
 	@DELETE
 	@Path("{id}")
@@ -150,7 +162,6 @@ public static String URL_SERVICIO = System.getenv("URL1");
                     rta.put("sport_id", entity.getId());
                     entityManager.remove(entity);
                     entityManager.getTransaction().commit();
-                    //System.out.printf("Sport %s removed from Database....");
 
                     
                 } catch (Throwable t) {
@@ -161,7 +172,6 @@ public static String URL_SERVICIO = System.getenv("URL1");
                 }
               
                 } finally {
-                    //entityManager.flush();
                         entityManager.clear();
                         entityManager.close();
                 }
@@ -171,13 +181,14 @@ public static String URL_SERVICIO = System.getenv("URL1");
         @OPTIONS
         @Path("{id}")
         public Response cors1(@javax.ws.rs.core.Context HttpHeaders requestHeaders) {
-            return Response.status(200).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept").build();
+            return Response.status(200).header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+                    .header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept").build();
         }
 
 	@GET
 	@Path("{id}")
 	public String getSport(@PathParam("id") Long id){
-	      //SportEntity entity=entityManager.find(SportEntity.class, id);"select u from SportEntity u where u.login = '" + login + "'"
             Query q = entityManager.createQuery("select u from SportEntity u where u.id="+ id +"");
             List<SportDTO> sports = q.getResultList();
             String json = new Gson().toJson(sports);
@@ -188,8 +199,6 @@ public static String URL_SERVICIO = System.getenv("URL1");
         @Path("{id}")
 	public void updateSport(@PathParam("id") Long id, SportDTO sport){
 		try {
-                    //SportDTO sports = new SportDTO();
-                    System.out.printf("Entro Update....");
                     entityManager.getTransaction().begin();
                     SportEntity entity=entityManager.find(SportEntity.class, id);
                     entity.setMaxAge(sport.getMaxAge());
@@ -212,39 +221,7 @@ public static String URL_SERVICIO = System.getenv("URL1");
                 }
 	}
 	
-        @GET
-        @Path("/consultar")
-        public String consultarSports() {
-            try {
-                //Se crea un cliente apache
-                Client client = Client.create();
-                /**
-                 * SE CONSUME EL SERVICIO REMOTO DE SPORTS 
-                 * URL_SERVICIO tiene la ubicaci?n de la aplicaci?n de Sport
-                 * (que se carga de service.properties)
-                 */
-
-                WebResource webResource = client.resource(URL_SERVICIO + "/webresources/Sport/sports");
-
-                ClientResponse response = webResource.accept("application/json")
-                       .get(ClientResponse.class);
-
-                    if (response.getStatus() != 200) {
-                       throw new RuntimeException("Failed : HTTP error code : "
-                            + response.getStatus());
-                    }
-
-                String output = response.getEntity(String.class);    
-                System.out.println("Output from Server .... \n");
-                System.out.println(output);  
-                return output;
-            
-       } 
-           catch (Exception ex) {
-            ex.printStackTrace();
-        }
-           return null;
-      }  
+       
         
         
 }

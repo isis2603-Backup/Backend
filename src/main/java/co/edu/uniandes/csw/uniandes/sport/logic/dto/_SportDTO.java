@@ -33,8 +33,10 @@ package co.edu.uniandes.csw.uniandes.sport.logic.dto;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-@XmlRootElement 
+@XmlRootElement
+//@JsonIgnoreProperties(ignoreUnknown = true);
 public abstract class _SportDTO {
 
 	
