@@ -22,6 +22,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -35,19 +36,12 @@ public class SportEntity implements Serializable{
      
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-//    @GeneratedValue(strategy=GenerationType.AUTO, generator="my_entity_seq_gen")
-//    @SequenceGenerator(name="my_entity_seq_gen", sequenceName="MY_ENTITY_SEQ")
+    
+    
     private Long id;
     
-    @NotNull
-    @Column(name = "create_at", updatable = false)
-    @Temporal(TemporalType.DATE)
-    private Calendar createdAt;
-
-    @NotNull
-    @Column(name = "updated_at")
-    @Temporal(TemporalType.DATE)
-    private Calendar updatedAt;
+    @Transient
+    private Long componentId;
     
     private String name;
     
@@ -62,15 +56,6 @@ public class SportEntity implements Serializable{
         
     }
     
-    @PreUpdate
-    private void updateTimestamp() {
-        this.updatedAt = Calendar.getInstance();
-    }
-
-    @PrePersist
-    private void creationTimestamp() {
-        this.createdAt = this.updatedAt = Calendar.getInstance();
-    }
 
     public Long getId() {
         return id;
@@ -80,6 +65,15 @@ public class SportEntity implements Serializable{
         this.id = id;
     }
 
+    public Long getComponentId() {
+        return componentId;
+    }
+    
+  
+    public void setComponentId(Long componentId) {
+        this.componentId = componentId;
+    }
+    
     public String getName() {
         return name;
     }
