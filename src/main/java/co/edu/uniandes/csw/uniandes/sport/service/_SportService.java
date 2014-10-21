@@ -74,8 +74,7 @@ public static String URL_SERVICIO = System.getenv("URL1");
         @PersistenceContext(unitName="SportPU")
  
 	protected EntityManager entityManager;
-
-
+ 
         @PostConstruct
         public void init() {
             try {
@@ -151,8 +150,17 @@ public static String URL_SERVICIO = System.getenv("URL1");
         
     }
         
-
-	@DELETE
+        
+        
+        @OPTIONS
+        @Path("{id}")
+        public Response cors1(@javax.ws.rs.core.Context HttpHeaders requestHeaders) {
+            return Response.status(200).header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+                    .header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept").build();
+        }
+        	
+        @DELETE
 	@Path("{id}")
 	public Response deleteSport(@PathParam("id") Long id){
             JSONObject rta = new JSONObject();    
@@ -178,14 +186,6 @@ public static String URL_SERVICIO = System.getenv("URL1");
 		return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(rta.toJSONString()).build();
 	}
         
-        @OPTIONS
-        @Path("{id}")
-        public Response cors1(@javax.ws.rs.core.Context HttpHeaders requestHeaders) {
-            return Response.status(200).header("Access-Control-Allow-Origin", "*")
-                    .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-                    .header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept").build();
-        }
-
 	@GET
 	@Path("{id}")
 	public String getSport(@PathParam("id") Long id){
@@ -194,11 +194,12 @@ public static String URL_SERVICIO = System.getenv("URL1");
             String json = new Gson().toJson(sports);
             return json;
 	}
-	
-	@PUT
+	       
+        @PUT
         @Path("{id}")
-	public void updateSport(@PathParam("id") Long id, SportDTO sport){
-		try {
+	public Response updateSport(@PathParam("id") Long id, SportDTO sport){
+		JSONObject rta = new JSONObject();
+                try {
                     entityManager.getTransaction().begin();
                     SportEntity entity=entityManager.find(SportEntity.class, id);
                     entity.setMaxAge(sport.getMaxAge());
@@ -206,19 +207,20 @@ public static String URL_SERVICIO = System.getenv("URL1");
                     entity.setName(sport.getName());
                     entityManager.getTransaction().commit();
                     System.out.printf("Sport update from Database....");
-
-                    
+                    rta.put("sport_id",entity.getId());
+                    return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(rta.toJSONString()).build();
                 } catch (Throwable t) {
                     t.printStackTrace();
                     System.out.printf("Error for update from Database....");
                 if (entityManager.getTransaction().isActive()) {
                     entityManager.getTransaction().rollback();
                 }
-              
+                    return Response.status(400).header("Access-Control-Allow-Origin", "*").entity(rta.toJSONString()).build();
                 } finally {
                         entityManager.clear();
                         entityManager.close();
                 }
+                
 	}
 	
        
