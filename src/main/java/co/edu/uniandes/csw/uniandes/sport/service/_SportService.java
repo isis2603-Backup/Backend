@@ -151,7 +151,7 @@ public static String URL_SERVICIO = System.getenv("URL1");
     }
         
         
-        
+        //Method Options for Cors
         @OPTIONS
         @Path("{id}")
         public Response cors1(@javax.ws.rs.core.Context HttpHeaders requestHeaders) {
