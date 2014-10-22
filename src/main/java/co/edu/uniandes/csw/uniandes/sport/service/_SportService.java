@@ -196,7 +196,7 @@ public static String URL_SERVICIO = System.getenv("URL1");
 	}
 	       
         @PUT
-        @Path("{id}")
+//        @Path("{id}")
 	public Response updateSport(@PathParam("id") Long id, SportDTO sport){
 		JSONObject rta = new JSONObject();
                 try {
