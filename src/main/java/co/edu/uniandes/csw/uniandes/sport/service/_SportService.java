@@ -197,7 +197,7 @@ public static String URL_SERVICIO = System.getenv("URL1");
 	       
         @PUT
 //        @Path("{id}")
-	public void updateSport(SportDTO sport){
+	public Response updateSport(SportDTO sport){
 		JSONObject rta = new JSONObject();
                 try {
                     entityManager.getTransaction().begin();
@@ -208,6 +208,7 @@ public static String URL_SERVICIO = System.getenv("URL1");
                     entityManager.getTransaction().commit();
                     System.out.printf("Sport update from Database....");
                     rta.put("sport_id",entity.getId());
+                    return Response.status(200).header("Access-Control-Allow-Origin", "*").build();
                     //return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(rta.toJSONString()).build();
                 } catch (Throwable t) {
                     t.printStackTrace();
@@ -216,6 +217,7 @@ public static String URL_SERVICIO = System.getenv("URL1");
                     entityManager.getTransaction().rollback();
                 }
                     //return Response.status(400).header("Access-Control-Allow-Origin", "*").entity(rta.toJSONString()).build();
+                     return Response.status(400).header("Access-Control-Allow-Origin", "*").build();
                 } finally {
                         entityManager.clear();
                         entityManager.close();
