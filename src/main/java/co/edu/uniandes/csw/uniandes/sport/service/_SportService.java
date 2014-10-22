@@ -197,11 +197,11 @@ public static String URL_SERVICIO = System.getenv("URL1");
 	       
         @PUT
 //        @Path("{id}")
-	public Response updateSport(@PathParam("id") Long id, SportDTO sport){
+	public Response updateSport(SportDTO sport){
 		JSONObject rta = new JSONObject();
                 try {
                     entityManager.getTransaction().begin();
-                    SportEntity entity=entityManager.find(SportEntity.class, id);
+                    SportEntity entity=entityManager.find(SportEntity.class, sport.getId());
                     entity.setMaxAge(sport.getMaxAge());
                     entity.setMinAge(sport.getMinAge());
                     entity.setName(sport.getName());
