@@ -40,7 +40,6 @@ import javax.ws.rs.core.MediaType;
 
 
 @Path("/Sport")
-//@Stateless
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class SportService extends _SportService {

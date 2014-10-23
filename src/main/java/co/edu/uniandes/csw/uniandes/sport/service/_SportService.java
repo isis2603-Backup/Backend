@@ -134,7 +134,7 @@ public static String URL_SERVICIO = System.getenv("URL1");
         @GET
         public Response getSports(@QueryParam("page") Integer page, @QueryParam("maxRecords") Integer maxRecords) {
 
-                Query count = entityManager.createQuery("select count(u) from SportEntity u");
+        Query count = entityManager.createQuery("select count(u) from SportEntity u");
 		Long regCount = 0L;
 		regCount = Long.parseLong(count.getSingleResult().toString());
 		Query q = entityManager.createQuery("select u from SportEntity u");

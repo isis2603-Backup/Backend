@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 
-package co.edu.uniandes.csw.uniandes.user.service;
+package co.edu.uniandes.csw.uniandes.sport.service;
+
 
 import co.edu.uniandes.csw.uniandes.api.JWT.JsonWebToken;
 import co.edu.uniandes.csw.uniandes.api.JWT.JwtHashAlgorithm;
@@ -74,9 +75,10 @@ public abstract class _LoginService {
         public Response login(Login login){
             System.out.println("Entro al login");
             boolean rta = false;
-            UserEntity us=new UserEntity();
+            
             try{
-                us =(UserEntity)entityManager.createQuery("select u from UserEntity u WHERE u.email='"+login.getUserName()+"'").getSingleResult();
+				UserEntity us=new UserEntity();
+                us =(UserEntity)entityManager.createQuery("select u from UserEntity u WHERE u.userName='"+login.getUserName()+"'").getSingleResult();
                 System.out.println(us.getUserName());
                 if(us!=null && us.getEmail().equalsIgnoreCase(login.getUserName())&& us.getPassword().equalsIgnoreCase(login.getPassword())){
                     rta=true;
@@ -98,9 +100,8 @@ public abstract class _LoginService {
                  
             }
             catch(Exception e){
-                e.printStackTrace();
-                e.getMessage();
-                return Response.status(400).build();
+                
+                return Response.status(401).header("Access-Control-Allow-Origin", "*").build();
             }
             finally{
                 entityManager.clear();
