@@ -137,6 +137,10 @@ public static String URL_SERVICIO = System.getenv("URL1");
 		for(String header : httpHeaders.getRequestHeaders().keySet()){
 			System.out.println(header);
 		}
+		System.out.println(httpHeaders.getHeaderString("AUTHORIZATION"));
+		System.out.println(httpHeaders.getHeaderString("authorization"));
+		
+		
 		Query count = entityManager.createQuery("select count(u) from SportEntity u");
 		Long regCount = 0L;
 		regCount = Long.parseLong(count.getSingleResult().toString());
