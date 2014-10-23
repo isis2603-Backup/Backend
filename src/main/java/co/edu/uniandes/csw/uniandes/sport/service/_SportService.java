@@ -36,11 +36,6 @@ import co.edu.uniandes.csw.uniandes.sport.logic.dto.SportDTO;
 import co.edu.uniandes.csw.uniandes.sport.logic.dto.SportPageDTO;
 import co.edu.uniandes.csw.uniandes.sport.persistence.converter.SportConverter;
 import co.edu.uniandes.csw.uniandes.sport.persistence.entity.SportEntity;
-import co.edu.uniandes.csw.uniandes.user.logic.dto.Login;
-import co.edu.uniandes.csw.uniandes.user.logic.dto.UserDTO;
-import co.edu.uniandes.csw.uniandes.user.persistence.converter.UserConverter;
-import co.edu.uniandes.csw.uniandes.user.persistence.converter._UserConverter;
-import co.edu.uniandes.csw.uniandes.user.persistence.entity.UserEntity;
 import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -60,6 +55,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -132,9 +128,10 @@ public static String URL_SERVICIO = System.getenv("URL1");
         
         
         @GET
-        public Response getSports(@QueryParam("page") Integer page, @QueryParam("maxRecords") Integer maxRecords) {
-
-        Query count = entityManager.createQuery("select count(u) from SportEntity u");
+        public Response getSports(@Context HttpHeaders httpHeaders, @QueryParam("page") Integer page, @QueryParam("maxRecords") Integer maxRecords) {
+	
+		System.out.println(httpHeaders);
+		Query count = entityManager.createQuery("select count(u) from SportEntity u");
 		Long regCount = 0L;
 		regCount = Long.parseLong(count.getSingleResult().toString());
 		Query q = entityManager.createQuery("select u from SportEntity u");
