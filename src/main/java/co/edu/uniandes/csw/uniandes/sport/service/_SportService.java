@@ -145,8 +145,8 @@ public static String URL_SERVICIO = System.getenv("URL1");
 		SportPageDTO response = new SportPageDTO();
 		response.setTotalRecords(regCount);
 		response.setRecords(SportConverter.entity2PersistenceDTOList(q.getResultList()));
-                String json = new Gson().toJson(response);
-                return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(json).build();
+        String json = new Gson().toJson(response);
+        return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(json).build();
         
     }
         

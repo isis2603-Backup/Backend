@@ -87,7 +87,8 @@ public abstract class _LoginService {
                     user.setPassword("");  
                     System.out.println("rta: "+ user);
                     String g = JsonWebToken.encode(user, "Ejemplo", JwtHashAlgorithm.HS512);
-                    return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(g).build();
+					String json = new Gson().toJson(g);
+                    return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(json).build();
                    
                 }else{
 				
