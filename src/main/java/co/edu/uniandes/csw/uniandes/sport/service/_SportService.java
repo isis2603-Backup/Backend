@@ -129,8 +129,10 @@ public static String URL_SERVICIO = System.getenv("URL1");
         
         @GET
         public Response getSports(@Context HttpHeaders httpHeaders, @QueryParam("page") Integer page, @QueryParam("maxRecords") Integer maxRecords) {
-	
-		System.out.println(httpHeaders.getRequestHeader("Authorization"));
+		System.out.println("ENTRO A HEADER");
+		for(String header : httpHeaders.getRequestHeaders().keySet()){
+			System.out.println(header);
+		}
 		Query count = entityManager.createQuery("select count(u) from SportEntity u");
 		Long regCount = 0L;
 		regCount = Long.parseLong(count.getSingleResult().toString());
