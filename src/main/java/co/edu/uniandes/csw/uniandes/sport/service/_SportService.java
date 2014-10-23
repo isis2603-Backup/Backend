@@ -139,7 +139,8 @@ public static String URL_SERVICIO = System.getenv("URL1");
 		}
 		//System.out.println(httpHeaders.getHeaderString("header token: " + "X_REST_USER"));
 //		System.out.println(httpHeaders.getHeaderString("authorization"));
-		
+		String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
+		System.out.println(token);
 		
 		Query count = entityManager.createQuery("select count(u) from SportEntity u");
 		Long regCount = 0L;
