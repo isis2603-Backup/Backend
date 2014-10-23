@@ -88,7 +88,7 @@ public static String URL_SERVICIO = System.getenv("URL1");
 		for(String header : requestHeaders.getRequestHeaders().keySet()){
 			System.out.println(header);
 		}
-            return Response.status(200).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept").build();
+            return Response.status(200).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept, X_REST_USER").build();
         }
 
         
