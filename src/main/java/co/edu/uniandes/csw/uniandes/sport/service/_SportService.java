@@ -40,7 +40,9 @@ import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -75,7 +77,12 @@ public static String URL_SERVICIO = System.getenv("URL1");
         public void init() {
             try {
                 entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
-            } catch (Exception e) {
+				Map<String, Object> emProperties = new HashMap<String, Object>();           
+				emProperties.put("eclipselink.tenant-id", "HTHL");
+				entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
+			
+			
+			} catch (Exception e) {
                 e.printStackTrace();
             }
         }
