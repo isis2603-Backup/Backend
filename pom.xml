@@ -82,6 +82,12 @@
             <version>17.0</version>
         </dependency> 
         
+		<!-- SHIRO   -->
+       <dependency>
+           <groupId>org.secnod.shiro</groupId>
+           <artifactId>shiro-jersey</artifactId>
+           <version>0.1.0</version>
+       </dependency>
          <!-- HIBERNATE 
         <dependency>
             <groupId>org.hibernate</groupId>
