@@ -44,7 +44,7 @@
         </dependency>
   
   
-        <!-- arquillian support for embedded glassfish -->
+<!--         arquillian support for embedded glassfish 
         <dependency>
             <groupId>org.jboss.arquillian.container</groupId>
             <artifactId>arquillian-glassfish-embedded-3.1</artifactId>
@@ -52,13 +52,13 @@
             <scope>test</scope>
         </dependency>
        
-        <!-- embedded glassfish 4 --> 
+         embedded glassfish 4  
         <dependency>
             <groupId>org.glassfish.main.extras</groupId>
             <artifactId>glassfish-embedded-all</artifactId>
             <version>4.0</version> 
             <scope>provided</scope> 
-        </dependency>
+        </dependency>-->
         <dependency> 
             <groupId>javax.ws.rs</groupId>
             <artifactId>jsr311-api</artifactId>
@@ -87,6 +87,20 @@
            <groupId>org.secnod.shiro</groupId>
            <artifactId>shiro-jersey</artifactId>
            <version>0.1.0</version>
+		   <exclusions>
+            <exclusion>
+                <artifactId>jersey-core</artifactId>
+                <groupId>com.sun.jersey</groupId>
+            </exclusion>
+            <exclusion>
+                <artifactId>jersey-json</artifactId>
+                <groupId>com.sun.jersey</groupId>
+            </exclusion>
+            <exclusion>
+                <artifactId>jersey-server</artifactId>
+                <groupId>com.sun.jersey</groupId>
+            </exclusion>
+			</exclusions>
        </dependency>
          <!-- HIBERNATE 
         <dependency>
@@ -115,11 +129,11 @@
             <version>4.3.6.Final</version>
         </dependency>
 
-        <dependency>
+-->        <dependency>
             <groupId>javassist</groupId>
             <artifactId>javassist</artifactId>
             <version>3.12.1.GA</version>
-        </dependency>
+        </dependency><!--
 
         <dependency>
                         <groupId>org.hibernate</groupId>
@@ -145,13 +159,6 @@
             <version>7.0.34.1</version>
             <scope>provided</scope>
         </dependency>
-        
-<!--		<dependency>
-            <groupId>co.edu.uniandes.csw</groupId>
-            <artifactId>crudmaker.web</artifactId>
-            <version>1.1.5</version>
-            <type>war</type>
-        </dependency>-->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
@@ -160,24 +167,27 @@
         </dependency>
         <dependency>
 			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-server</artifactId>
-			<version>1.8</version>
+			<artifactId>jersey-servlet</artifactId>
+			<version>1.13</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-json</artifactId>
-			<version>1.8</version>
+			<version>1.13</version>
 		</dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
-            <version>1.8</version>
+            <version>1.13</version>
             <type>jar</type>
         </dependency>
-       
-        
-        
-        
+	
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
     
 

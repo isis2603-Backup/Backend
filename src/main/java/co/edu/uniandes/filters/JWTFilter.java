@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package co.edu.uniandes.filters;
 
 /**
@@ -20,21 +19,24 @@ import javax.ws.rs.ext.Provider;
 
 @Provider
 @PreMatching
-public class JWTFilter implements ContainerRequestFilter{
+public class JWTFilter implements ContainerRequestFilter {
 
-public void filter(ContainerRequestContext ctx) throws IOException{
+	public void filter(ContainerRequestContext ctx) throws IOException {
 
-String servicio=ctx.getUriInfo().getPath();
-String methodOverride = ctx.getHeaderString("X_REST_USER");
+		String servicio = ctx.getUriInfo().getPath();
+		System.out.println("path::::: " + servicio);
+		String methodOverride = ctx.getHeaderString("X_REST_USER");
 
-if(methodOverride!=null){
-		ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                .entity("User cannot access the resource.")
-                .build());
-}
+		
+		if(servicio.equals("/webresources/Auth/*")){
+				
+		}
+		else if (methodOverride == null) {
+			ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+					.entity("User cannot access the resource.")
+					.build());
+		}
 
-
-
-}
+	}
 
 }
