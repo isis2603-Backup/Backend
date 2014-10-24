@@ -34,7 +34,7 @@ import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 @Entity
 @XmlRootElement
 @Multitenant
-@TenantDiscriminatorColumn(name="Busines Unit")
+@TenantDiscriminatorColumn(name="Tenant-id")
 public class SportEntity implements Serializable{
      private static final long serialVersionUID = 1L;
      
