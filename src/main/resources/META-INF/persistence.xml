@@ -11,7 +11,7 @@
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
       <property name="javax.persistence.jdbc.user" value="doicmgmpdlicxn"/>
       <property name="eclipselink.logging.level" value="FINE"/>
-      <property name="eclipselink.tenant-id" value="Tenant-test"/>
+      <property name="eclipselink.tenant-id" value="Tenant"/>
       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
     </properties>
   </persistence-unit>
