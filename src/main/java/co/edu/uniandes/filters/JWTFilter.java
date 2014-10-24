@@ -29,7 +29,7 @@ String methodOverride = ctx.getHeaderString("X_REST_USER");
 if(servicio.equals("/webresources/Auth/login")){
 	
 
-}else if(methodOverride==null){
+}else if(methodOverride!=null){
 		ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
                 .entity("User cannot access the resource.")
                 .build());
