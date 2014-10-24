@@ -137,8 +137,7 @@ public static String URL_SERVICIO = System.getenv("URL1");
 		for(String header : httpHeaders.getRequestHeaders().keySet()){
 			System.out.println(header);
 		}
-		//System.out.println(httpHeaders.getHeaderString("header token: " + "X_REST_USER"));
-//		System.out.println(httpHeaders.getHeaderString("authorization"));
+		
 		String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
 		System.out.println(token);
 		
@@ -165,10 +164,10 @@ public static String URL_SERVICIO = System.getenv("URL1");
         public Response cors1(@javax.ws.rs.core.Context HttpHeaders requestHeaders) {
             return Response.status(200).header("Access-Control-Allow-Origin", "*")
                     .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-                    .header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept").build();
+                    .header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept,X_REST_USER").build();
         }
         	
-        @DELETE
+    @DELETE
 	@Path("{id}")
 	public Response deleteSport(@PathParam("id") Long id){
             JSONObject rta = new JSONObject();    
