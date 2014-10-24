@@ -24,13 +24,18 @@ public class JWTFilter implements ContainerRequestFilter{
 
 public void filter(ContainerRequestContext ctx) throws IOException{
 
-//String servicio=ctx.getUriInfo().getPath();
+String servicio=ctx.getUriInfo().getPath();
 String methodOverride = ctx.getHeaderString("X_REST_USER");
-if(methodOverride==null){
-ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("User cannot access the resource.")
-                    .build());
+if(servicio.equals("/webresources/Auth/login")){
+	
+
+}else if(methodOverride==null){
+		ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                .entity("User cannot access the resource.")
+                .build());
 }
+
+
 
 }
 
