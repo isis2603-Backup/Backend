@@ -10,8 +10,8 @@
             <property name="javax.persistence.jdbc.password" value="3EEw2HnohkkRrLG-VHL3DRVLUZ"/>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.user" value="doicmgmpdlicxn"/>
-            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
             <property name="eclipselink.logging.level" value="FINE"/>
+            <property name="eclipselink.tenant-id" value="Tenant-test">
    
         </properties>
     </persistence-unit>
