@@ -60,6 +60,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.json.simple.JSONObject;
 
 public abstract class _SportService {
@@ -132,6 +134,8 @@ public abstract class _SportService {
 //		Imprime el header que ha enviado el usuario desde el cliente
 //		String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
 //		System.out.println(token);
+		Subject currentUser = SecurityUtils.getSubject();
+		if (currentUser.isRemembered()){
 		Query count = entityManager.createQuery("select count(u) from SportEntity u");
 		Long regCount = 0L;
 		regCount = Long.parseLong(count.getSingleResult().toString());
@@ -145,7 +149,10 @@ public abstract class _SportService {
 		response.setRecords(SportConverter.entity2PersistenceDTOList(q.getResultList()));
 		String json = new Gson().toJson(response);
 		return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(json).build();
-
+		}else{
+		
+		return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("You need Authenticated").build();
+		}
 	}
 
 	//Method Options for Cors

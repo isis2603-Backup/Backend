@@ -134,22 +134,22 @@ public abstract class _LoginService {
 			token.setRememberMe(true);
 			Subject currentUser = SecurityUtils.getSubject();
 			currentUser.login(token);
-			String g = JsonWebToken.encode(login.getUserName(), "Ejemplo", JwtHashAlgorithm.HS512);
+			String g = JsonWebToken.encode(login, "Ejemplo", JwtHashAlgorithm.HS512);
 			String json = new Gson().toJson(g);
 			return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(json).build();
 
 		}
 	catch ( UnknownAccountException uae) { 
-		return Response.status(401).header("Access-Control-Allow-Origin", "*").build();
+		return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("Incorrect Password").build();
 	}
 	catch ( IncorrectCredentialsException ice) { 
-		return Response.status(401).header("Access-Control-Allow-Origin", "*").build();
+		return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("Incorrect Password").build();
 	}
 	catch ( LockedAccountException lae) { 
-		return Response.status(401).header("Access-Control-Allow-Origin", "*").build();
+		return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("Incorrect Password").build();
 	}
 	catch ( ExcessiveAttemptsException eae) { 
-		return Response.status(401).header("Access-Control-Allow-Origin", "*").build();
+		return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("Incorrect Password").build();
 		
 	} 
 	catch ( AuthenticationException ae ) {
