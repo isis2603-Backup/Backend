@@ -134,8 +134,10 @@ public abstract class _SportService {
 //		Imprime el header que ha enviado el usuario desde el cliente
 //		String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
 //		System.out.println(token);
+		
+		
 		Subject currentUser = SecurityUtils.getSubject();
-		if (currentUser.isRemembered()){
+		if (currentUser.isAuthenticated()){
 		Query count = entityManager.createQuery("select count(u) from SportEntity u");
 		Long regCount = 0L;
 		regCount = Long.parseLong(count.getSingleResult().toString());
