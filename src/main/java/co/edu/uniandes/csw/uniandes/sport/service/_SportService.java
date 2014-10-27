@@ -63,11 +63,11 @@ import javax.ws.rs.core.Response;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.eclipse.persistence.config.EntityManagerProperties;
+import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.json.simple.JSONObject;
 
 public abstract class _SportService {
 
-	public static String URL_SERVICIO = System.getenv("URL1");
 
 	@PersistenceContext(unitName = "SportPU")
 
@@ -103,10 +103,13 @@ public abstract class _SportService {
 			SportDTO s = new SportDTO();
 			s.setName(sport.getName());
 			s.setMaxAge(sport.getMaxAge());
-			Map<String, Object> emProperties = new HashMap<String, Object>();
-			emProperties.put("eclipselink.tenant-id", "1");//Asigna un valor al multitenant
-			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
+//			Map<String, Object> emProperties = new HashMap<String, Object>();
+//			emProperties.put("eclipselink.tenant-id", "1");//Asigna un valor al multitenant
+//			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
+			
 			try {
+//				entityManager.setProperty("other.tenant.id.property", "707");
+//				entityManager.setProperty(EntityManagerProperties.MULTITENANT_PROPERTY_DEFAULT, "707");
 				entityManager.getTransaction().begin();
 				entityManager.persist(entity);
 				entityManager.getTransaction().commit();
