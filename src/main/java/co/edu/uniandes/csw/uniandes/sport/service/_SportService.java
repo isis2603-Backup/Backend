@@ -104,7 +104,7 @@ public abstract class _SportService {
 			s.setName(sport.getName());
 			s.setMaxAge(sport.getMaxAge());
 			Map<String, Object> emProperties = new HashMap<String, Object>();
-			emProperties.put("eclipselink.tenant-id", 1);//Asigna un valor al multitenant
+			emProperties.put("eclipselink.tenant-id", "1");//Asigna un valor al multitenant
 			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
 			try {
 				entityManager.getTransaction().begin();
