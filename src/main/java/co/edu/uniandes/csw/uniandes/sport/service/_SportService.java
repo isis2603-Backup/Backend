@@ -62,6 +62,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.eclipse.persistence.config.EntityManagerProperties;
 import org.json.simple.JSONObject;
 
 public abstract class _SportService {
@@ -97,11 +98,14 @@ public abstract class _SportService {
 	@POST
 	public Response createSport(SportDTO sport) {
 		if (sport != null) {
-			SportEntity entity = SportConverter.persistenceDTO2Entity(sport);
+			SportEntity entity = SportConverter.persistenceDTO2Entity(sport);		
 			JSONObject rta = new JSONObject();
 			SportDTO s = new SportDTO();
 			s.setName(sport.getName());
 			s.setMaxAge(sport.getMaxAge());
+			Map<String, Object> emProperties = new HashMap<String, Object>();
+			emProperties.put("eclipselink.tenant-id", 1);//Asigna un valor al multitenant
+			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
 			try {
 				entityManager.getTransaction().begin();
 				entityManager.persist(entity);
