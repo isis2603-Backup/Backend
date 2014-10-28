@@ -5,7 +5,7 @@
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <shared-cache-mode>NONE</shared-cache-mode>
     <properties>
-      <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+      <property name="eclipselink.ddl-generation" value="create-tables"/>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-54-204-2-217.compute-1.amazonaws.com:5432/derhf04nit9u87?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"/>
       <property name="javax.persistence.jdbc.password" value="3EEw2HnohkkRrLG-VHL3DRVLUZ"/>
       <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>

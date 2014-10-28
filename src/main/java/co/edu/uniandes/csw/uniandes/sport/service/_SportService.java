@@ -158,9 +158,10 @@ public abstract class _SportService {
 		if (currentUser.isAuthenticated()) {
 			String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
 			System.out.println("tohen::::::"+token);
-			String[] tok; 
+			String[] tok;
+			System.err.println("lwenght::::::::" + tok.length);
 			tok	= token.split(".");
-			System.out.println("tok::::::"+tok[0]);
+			System.out.println("tok::::::"+tok);
 			String userName = tok[0];
 			System.out.println("user:::::"+userName);
 			String userToken = JsonWebToken.decode(userName, "Ejemplo", true);
