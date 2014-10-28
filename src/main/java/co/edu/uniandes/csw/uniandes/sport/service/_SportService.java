@@ -157,8 +157,10 @@ public abstract class _SportService {
 		Subject currentUser = SecurityUtils.getSubject();
 		if (currentUser.isAuthenticated()) {
 			String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
+			System.out.println("tohen::::::"+token);
 			String[] tok = token.split(".");
 			String userName = tok[1];
+			System.out.println("user:::::"+userName);
 			String userToken = JsonWebToken.decode(userName, "Ejemplo", true);
 			Gson gson = new GsonBuilder().serializeNulls().create();
 			UserDTO res = gson.fromJson(userToken, UserDTO.class);
