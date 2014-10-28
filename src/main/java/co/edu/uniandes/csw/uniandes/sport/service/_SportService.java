@@ -237,7 +237,7 @@ public abstract class _SportService {
 
 	@PUT
 //        @Path("{id}")
-	public Response updateSport(SportDTO sport) {
+	public void updateSport(SportDTO sport) {
 		JSONObject rta = new JSONObject();
 		try {
 			entityManager.getTransaction().begin();
@@ -248,7 +248,7 @@ public abstract class _SportService {
 			entityManager.getTransaction().commit();
 			System.out.printf("Sport update from Database....");
 			rta.put("sport_id", entity.getId());
-			return Response.status(200).header("Access-Control-Allow-Origin", "*").build();
+			//return Response.status(200).header("Access-Control-Allow-Origin", "*").build();
 			//return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(rta.toJSONString()).build();
 		} catch (Throwable t) {
 			t.printStackTrace();
@@ -257,7 +257,7 @@ public abstract class _SportService {
 				entityManager.getTransaction().rollback();
 			}
 			//return Response.status(400).header("Access-Control-Allow-Origin", "*").entity(rta.toJSONString()).build();
-			return Response.status(400).header("Access-Control-Allow-Origin", "*").build();
+			//return Response.status(400).header("Access-Control-Allow-Origin", "*").build();
 		} finally {
 			entityManager.clear();
 			entityManager.close();
