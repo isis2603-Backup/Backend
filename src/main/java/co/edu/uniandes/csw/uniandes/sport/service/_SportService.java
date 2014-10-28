@@ -159,8 +159,8 @@ public abstract class _SportService {
 			String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
 			System.out.println("tohen::::::"+token);
 			String[] tok;
-			System.err.println("lwenght::::::::" + tok.length);
 			tok	= token.split(".");
+			System.err.println("lwenght::::::::" + tok.length);
 			System.out.println("tok::::::"+tok);
 			String userName = tok[0];
 			System.out.println("user:::::"+userName);
