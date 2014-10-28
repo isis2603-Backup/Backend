@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public abstract class _UserDTO {
     
-        private Long id;
+    private Long id;
 	
 
 	private String userName;
