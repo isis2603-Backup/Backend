@@ -82,9 +82,9 @@ public abstract class _SportService {
 	public void init() {
 		try {
 			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
-//			Map<String, Object> emProperties = new HashMap<String, Object>();
-//			emProperties.put("eclipselink.tenant-id", "HTHL");//Asigna un valor al multitenant
-//			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
+			Map<String, Object> emProperties = new HashMap<String, Object>();
+			emProperties.put("eclipselink.tenant-id", "HTHL");//Asigna un valor al multitenant
+			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,10 +112,12 @@ public abstract class _SportService {
 			try {
 				String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
 				String userName = token.split(".")[1];
+				System.err.println("userName::::"+ userName);
 				String userToken = JsonWebToken.decode(userName, "Ejemplo", true);
 				Gson gson = new GsonBuilder().serializeNulls().create();
 				UserDTO res = gson.fromJson(userToken, UserDTO.class);
 				String tenant = res.getTenant();
+				System.err.println("tenant::::"+ tenant);
 				Map<String, Object> emProperties = new HashMap<String, Object>();
 				emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
 				entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
@@ -161,6 +163,7 @@ public abstract class _SportService {
 			Gson gson = new GsonBuilder().serializeNulls().create();
 			UserDTO res = gson.fromJson(userToken, UserDTO.class);
 			String tenant = res.getTenant();
+			System.err.println("tenant getsport::::"+ tenant);
 			Map<String, Object> emProperties = new HashMap<String, Object>();
 			emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
 			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
