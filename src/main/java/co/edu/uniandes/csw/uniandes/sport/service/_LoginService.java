@@ -134,7 +134,7 @@ public abstract class _LoginService {
 			token.setRememberMe(true);
 			Subject currentUser = SecurityUtils.getSubject();
 			currentUser.login(token);
-			String g = JsonWebToken.encode(login, "Ejemplo", JwtHashAlgorithm.HS512);
+			String g = JsonWebToken.encode(login + "tenant", "Ejemplo", JwtHashAlgorithm.HS512);
 			String json = new Gson().toJson(g);
 			return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(json).build();
 
