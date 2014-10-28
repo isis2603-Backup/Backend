@@ -159,10 +159,10 @@ public abstract class _SportService {
 			String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
 			System.out.println("tohen::::::"+token);
 			String[] tok;
-			tok	= token.split(".");
+			tok	= token.split(".",3);
 			System.err.println("lwenght::::::::" + tok.length);
 			System.out.println("tok::::::"+tok);
-			String userName = tok[0];
+			String userName = tok[1];
 			System.out.println("user:::::"+userName);
 			String userToken = JsonWebToken.decode(userName, "Ejemplo", true);
 			Gson gson = new GsonBuilder().serializeNulls().create();
