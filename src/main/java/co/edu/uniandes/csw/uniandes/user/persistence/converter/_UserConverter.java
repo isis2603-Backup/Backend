@@ -53,6 +53,7 @@ public abstract class _UserConverter {
 					dto.setUserName(entity.getUserName());
 					dto.setEmail(entity.getEmail());
 					dto.setPassword(entity.getPassword());
+					dto.setTenant(entity.getTenant());
 
 //				}	
 			return dto;
@@ -71,6 +72,8 @@ public abstract class _UserConverter {
 					entity.setEmail(dto.getEmail());
 			
 					entity.setPassword(dto.getPassword());
+					
+					entity.setTenant(dto.getTenant());
 			
 
 			

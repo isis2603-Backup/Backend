@@ -141,6 +141,7 @@ public abstract class _LoginService {
 			UserEntity us = new UserEntity();
 			us = (UserEntity) entityManager.createQuery("select u from UserEntity u WHERE u.userName='" + login.getUserName() + "'").getSingleResult();
 			System.out.println(us.getUserName());
+			System.out.println(us.getTenant());
 			UserDTO user = new UserDTO();
 			user = UserConverter.entity2PersistenceDTO(us);
 			System.out.println("rta: " + user);
