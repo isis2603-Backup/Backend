@@ -14,6 +14,8 @@ import co.edu.uniandes.csw.uniandes.user.persistence.converter.UserConverter;
 import co.edu.uniandes.csw.uniandes.user.persistence.entity.UserEntity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -55,7 +57,12 @@ public abstract class _LoginService {
 	@PostConstruct
 	public void init() {
 		try {
+
 			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
+//			Map<String, Object> emProperties = new HashMap<String, Object>();
+//			emProperties.put("eclipselink.tenant-id", "1");//Asigna un valor al multitenant
+//			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -111,15 +118,12 @@ public abstract class _LoginService {
 
 	}
 
-	
 	@Path("/login_test")
 	@OPTIONS
 	public Response cors1(@javax.ws.rs.core.Context HttpHeaders requestHeaders) {
 		return Response.status(200).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept").build();
 	}
-	
-	
-	
+
 	@POST
 	@Path("/login_test")
 	public Response login2(Login login) {
@@ -129,32 +133,33 @@ public abstract class _LoginService {
 		try {
 			UsernamePasswordToken token
 					= new UsernamePasswordToken(login.getUserName(), login.getPassword());
-
 			//”Remember Me” built-in, just do this:
 			token.setRememberMe(true);
 			Subject currentUser = SecurityUtils.getSubject();
 			currentUser.login(token);
-			String g = JsonWebToken.encode(login + "tenant", "Ejemplo", JwtHashAlgorithm.HS512);
+			System.out.println("Entro al login:::::::");
+			UserEntity us = new UserEntity();
+			us = (UserEntity) entityManager.createQuery("select u from UserEntity u WHERE u.userName='" + login.getUserName() + "'").getSingleResult();
+			System.out.println(us.getUserName());
+			UserDTO user = new UserDTO();
+			user = UserConverter.entity2PersistenceDTO(us);
+			System.out.println("rta: " + user);
+			String g = JsonWebToken.encode(user, "Ejemplo", JwtHashAlgorithm.HS512);
 			String json = new Gson().toJson(g);
 			return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(json).build();
 
-		}
-	catch ( UnknownAccountException uae) { 
-		return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("Incorrect Password").build();
-	}
-	catch ( IncorrectCredentialsException ice) { 
-		return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("Incorrect Password").build();
-	}
-	catch ( LockedAccountException lae) { 
-		return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("Incorrect Password").build();
-	}
-	catch ( ExcessiveAttemptsException eae) { 
-		return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("Incorrect Password").build();
-		
-	} 
-	catch ( AuthenticationException ae ) {
-		return Response.status(401).header("Access-Control-Allow-Origin", "*").build();
-	} finally {
+		} catch (UnknownAccountException uae) {
+			return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("Incorrect Password").build();
+		} catch (IncorrectCredentialsException ice) {
+			return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("Incorrect Password").build();
+		} catch (LockedAccountException lae) {
+			return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("Incorrect Password").build();
+		} catch (ExcessiveAttemptsException eae) {
+			return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("Incorrect Password").build();
+
+		} catch (AuthenticationException ae) {
+			return Response.status(401).header("Access-Control-Allow-Origin", "*").build();
+		} finally {
 			entityManager.clear();
 			entityManager.close();
 		}
@@ -169,8 +174,8 @@ public abstract class _LoginService {
 	 * obtienen los datos de sesion
 	 */
 	@GET
-		@Path("/session")
-		public String getLogedUser(@Context HttpServletRequest req) {
+	@Path("/session")
+	public String getLogedUser(@Context HttpServletRequest req) {
 
 		return "<b>" + req.getRemoteUser() + "</b></br><a href=\"webresources/auth/\">Log Out</a>";
 	}

@@ -30,12 +30,18 @@
 package co.edu.uniandes.csw.uniandes.sport.service;
 
 //import co.edu.uniandes.csw.uniandes.sport.logic.api.ISportLogicService;
+import co.edu.uniandes.csw.uniandes.api.JWT.JsonWebToken;
+import co.edu.uniandes.csw.uniandes.api.JWT.JwtHashAlgorithm;
 import co.edu.uniandes.csw.uniandes.persistence.PersistenceManager;
 import co.edu.uniandes.csw.uniandes.sport.logic.dto.SportDTO;
 import co.edu.uniandes.csw.uniandes.sport.logic.dto.SportPageDTO;
 import co.edu.uniandes.csw.uniandes.sport.persistence.converter.SportConverter;
 import co.edu.uniandes.csw.uniandes.sport.persistence.entity.SportEntity;
+import co.edu.uniandes.csw.uniandes.user.logic.dto.UserDTO;
+import co.edu.uniandes.csw.uniandes.user.persistence.converter.UserConverter;
+import co.edu.uniandes.csw.uniandes.user.persistence.entity.UserEntity;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -68,7 +74,6 @@ import org.json.simple.JSONObject;
 
 public abstract class _SportService {
 
-
 	@PersistenceContext(unitName = "SportPU")
 
 	protected EntityManager entityManager;
@@ -77,9 +82,9 @@ public abstract class _SportService {
 	public void init() {
 		try {
 			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
-			Map<String, Object> emProperties = new HashMap<String, Object>();
-			emProperties.put("eclipselink.tenant-id", "HTHL");//Asigna un valor al multitenant
-			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
+//			Map<String, Object> emProperties = new HashMap<String, Object>();
+//			emProperties.put("eclipselink.tenant-id", "HTHL");//Asigna un valor al multitenant
+//			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -96,18 +101,24 @@ public abstract class _SportService {
 	}
 
 	@POST
-	public Response createSport(SportDTO sport) {
+	public Response createSport(@Context HttpHeaders httpHeaders, SportDTO sport) {
 		if (sport != null) {
-			SportEntity entity = SportConverter.persistenceDTO2Entity(sport);		
+			SportEntity entity = SportConverter.persistenceDTO2Entity(sport);
 			JSONObject rta = new JSONObject();
 			SportDTO s = new SportDTO();
 			s.setName(sport.getName());
 			s.setMaxAge(sport.getMaxAge());
-//			Map<String, Object> emProperties = new HashMap<String, Object>();
-//			emProperties.put("eclipselink.tenant-id", "1");//Asigna un valor al multitenant
-//			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
-			
+
 			try {
+				String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
+				String userName = token.split(".")[1];
+				String userToken = JsonWebToken.decode(userName, "Ejemplo", true);
+				Gson gson = new GsonBuilder().serializeNulls().create();
+				UserDTO res = gson.fromJson(userToken, UserDTO.class);
+				String tenant = res.getTenant();
+				Map<String, Object> emProperties = new HashMap<String, Object>();
+				emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
+				entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
 //				entityManager.setProperty("other.tenant.id.property", "707");
 //				entityManager.setProperty(EntityManagerProperties.MULTITENANT_PROPERTY_DEFAULT, "707");
 				entityManager.getTransaction().begin();
@@ -137,30 +148,42 @@ public abstract class _SportService {
 
 	@GET
 	public Response getSports(@Context HttpHeaders httpHeaders, @QueryParam("page") Integer page, @QueryParam("maxRecords") Integer maxRecords) {
-
 //		Imprime el header que ha enviado el usuario desde el cliente
 //		String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
 //		System.out.println(token);
-		
-		
+		try{
 		Subject currentUser = SecurityUtils.getSubject();
-		if (currentUser.isAuthenticated()){
-		Query count = entityManager.createQuery("select count(u) from SportEntity u");
-		Long regCount = 0L;
-		regCount = Long.parseLong(count.getSingleResult().toString());
-		Query q = entityManager.createQuery("select u from SportEntity u");
-		if (page != null && maxRecords != null) {
-			q.setFirstResult((page - 1) * maxRecords);
-			q.setMaxResults(maxRecords);
+		if (currentUser.isAuthenticated()) {
+			String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
+			String userName = token.split(".")[1];
+			String userToken = JsonWebToken.decode(userName, "Ejemplo", true);
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			UserDTO res = gson.fromJson(userToken, UserDTO.class);
+			String tenant = res.getTenant();
+			Map<String, Object> emProperties = new HashMap<String, Object>();
+			emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
+			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
+
+			Query count = entityManager.createQuery("select count(u) from SportEntity u");
+			Long regCount = 0L;
+			regCount = Long.parseLong(count.getSingleResult().toString());
+			Query q = entityManager.createQuery("select u from SportEntity u");
+			if (page != null && maxRecords != null) {
+				q.setFirstResult((page - 1) * maxRecords);
+				q.setMaxResults(maxRecords);
+			}
+			SportPageDTO response = new SportPageDTO();
+			response.setTotalRecords(regCount);
+			response.setRecords(SportConverter.entity2PersistenceDTOList(q.getResultList()));
+			String json = new Gson().toJson(response);
+			return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(json).build();
+		} else {
+
+			return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("You need Authenticated").build();
 		}
-		SportPageDTO response = new SportPageDTO();
-		response.setTotalRecords(regCount);
-		response.setRecords(SportConverter.entity2PersistenceDTOList(q.getResultList()));
-		String json = new Gson().toJson(response);
-		return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(json).build();
-		}else{
-		
-		return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("You need Authenticated").build();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("You need Authenticated").build();
 		}
 	}
 

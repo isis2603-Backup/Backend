@@ -19,6 +19,8 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.annotations.Multitenant;
+import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 
 /**
  *
@@ -38,6 +40,10 @@ public class UserEntity implements Serializable{
     private String password;
     
     private String email;
+	
+	private String tenant;
+
+	
     
     
     //
@@ -79,6 +85,16 @@ public class UserEntity implements Serializable{
     public void setPassword(String password) {
         this.password = password;
     }
+	
+	public String getTenant() {
+		return tenant;
+	}
 
+	public void setTenant(String tenant) {
+		this.tenant = tenant;
+	}
+	
+
+	
    
 }

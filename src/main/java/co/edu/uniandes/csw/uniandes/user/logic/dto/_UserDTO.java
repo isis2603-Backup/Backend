@@ -21,7 +21,8 @@ public abstract class _UserDTO {
 
 	private String userName;
         
-        	
+    private String tenant;    	
+
 
 	private String password;
 	
@@ -61,6 +62,13 @@ public abstract class _UserDTO {
         this.email = email;
     }
 
+	public String getTenant() {
+		return tenant;
+	}
+
+	public void setTenant(String tenant) {
+		this.tenant = tenant;
+	}
     
     
 }
