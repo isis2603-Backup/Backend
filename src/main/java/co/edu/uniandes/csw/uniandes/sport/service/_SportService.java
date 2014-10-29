@@ -96,9 +96,11 @@ public abstract class _SportService {
 	public Response cors(@javax.ws.rs.core.Context HttpHeaders requestHeaders) {
 		//Imprime los headers 	
 		for (String header : requestHeaders.getRequestHeaders().keySet()) {
+			if(header.equals("X_REST_USER")){
+				fullHeader = header;
+			}
 			System.out.println(header);
 		}
-		fullHeader=requestHeaders.getRequestHeader("X_REST_USER").get(0);
 		System.out.println(fullHeader);
 		return Response.status(200).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept, X_REST_USER").build();
 	}
