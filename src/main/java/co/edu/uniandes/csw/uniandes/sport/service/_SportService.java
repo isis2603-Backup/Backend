@@ -38,13 +38,8 @@ import co.edu.uniandes.csw.uniandes.sport.logic.dto.SportPageDTO;
 import co.edu.uniandes.csw.uniandes.sport.persistence.converter.SportConverter;
 import co.edu.uniandes.csw.uniandes.sport.persistence.entity.SportEntity;
 import co.edu.uniandes.csw.uniandes.user.logic.dto.UserDTO;
-import co.edu.uniandes.csw.uniandes.user.persistence.converter.UserConverter;
-import co.edu.uniandes.csw.uniandes.user.persistence.entity.UserEntity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,23 +48,18 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.eclipse.persistence.config.EntityManagerProperties;
-import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.json.simple.JSONObject;
 
 public abstract class _SportService {
@@ -160,10 +150,12 @@ public abstract class _SportService {
 		if (currentUser.isAuthenticated()) {
 			
 			String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
+			//String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwidXNlck5hbWUiOiJleGFtcGxldXNlciIsInRlbmFudCI6IjEiLCJwYXNzd29yZCI6ImV4YW1wbGVwYXNzd29yZCIsImVtYWlsIjoibmF0YW4ifQ.-bSjKlpI6QkK1WDuLHdMCxUiE7deKmuwEJ9uYyrszRYrUaa3zZ6xS2SpnYtQWpeWptX4TkPjaF69m5b3_c0UBA";
 			System.out.println("tohen::::::"+token);
 			String tok	= token.split("\\.")[1];
 			System.out.println("tok::::::"+tok);
-			String userToken = JsonWebToken.decode(token, "Ejemplo", false);
+			String userToken = JsonWebToken.decode(token, "Ejemplo", true);
+			System.out.println("usuario::::::" + userToken);
 			Gson gson = new GsonBuilder().serializeNulls().create();
 			UserDTO res = gson.fromJson(userToken, UserDTO.class);
 			System.out.println("res:::::::"+res);

@@ -1,6 +1,9 @@
 package co.edu.uniandes.csw.uniandes.api.JWT;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import java.io.UnsupportedEncodingException;
 import java.security.SignatureException;
 import org.apache.commons.codec.binary.Base64;
@@ -64,18 +67,22 @@ public class JsonWebToken {
         String header = parts[0];
         String payload = parts[1];
         String noDecodedCrypto = parts[2];
+		String decodedHeader = new String(Base64.decodeBase64(header));
+		String decodedPayload = new String(Base64.decodeBase64(payload));
+        JsonElement jsonHeader = gsonUtil.fromJson(decodedHeader, JsonElement.class);
+		JsonObject jobjHeader = jsonHeader.getAsJsonObject();
+		JsonElement jsonPayload = gsonUtil.fromJson(decodedPayload, JsonElement.class);
+		JsonObject jobjPayload = jsonPayload.getAsJsonObject();
 
-        JsonObject jsonHeader = gsonUtil.fromJson(new String(Base64.decodeBase64(header)), JsonObject.class);
-        JsonObject jsonPayload = gsonUtil.fromJson(new String(Base64.decodeBase64(payload)), JsonObject.class);
 
 
         if(verify){
             String toSign = (header+"."+payload);
-            JwtHashAlgorithm algorithm = JwtHashAlgorithm.valueOf(jsonHeader.get("alg").getAsString());
+            JwtHashAlgorithm algorithm = JwtHashAlgorithm.valueOf(jobjHeader.get("alg").getAsString());
             verifyToken(key,toSign,noDecodedCrypto,algorithm);
 
         }
-        return jsonPayload.toString();
+        return jobjPayload.toString();
     }
 
 //    /**
