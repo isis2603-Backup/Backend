@@ -166,6 +166,7 @@ public abstract class _SportService {
 			String userToken = JsonWebToken.decode(tok, "Ejemplo", true);
 			Gson gson = new GsonBuilder().serializeNulls().create();
 			UserDTO res = gson.fromJson(userToken, UserDTO.class);
+			System.out.println("res:::::::"+res);
 			String tenant = res.getTenant();
 			System.err.println("tenant getsport::::"+ tenant);
 			Map<String, Object> emProperties = new HashMap<String, Object>();
