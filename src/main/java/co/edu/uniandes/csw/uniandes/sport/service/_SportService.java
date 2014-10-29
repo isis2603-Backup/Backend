@@ -111,6 +111,7 @@ public abstract class _SportService {
 
 			try {
 				String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
+				//System.err.println("");
 //				String userName = token.split(".")[1];
 //				System.err.println("userName::::"+ userName);
 //				String userToken = JsonWebToken.decode(userName, "Ejemplo", true);
@@ -153,7 +154,7 @@ public abstract class _SportService {
 		Subject currentUser = SecurityUtils.getSubject();
 		if (currentUser.isAuthenticated()) {
 			String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
-//			System.out.println("tohen::::::"+token);
+			System.out.println("tohen::::::"+token);
 //			String[] tok;
 //			tok	= token.split(".",3);
 //			System.err.println("lwenght::::::::" + tok.length);
