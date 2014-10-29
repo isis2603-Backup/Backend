@@ -163,7 +163,7 @@ public abstract class _SportService {
 			System.out.println("tohen::::::"+token);
 			String tok	= token.split("\\.")[1];
 			System.out.println("tok::::::"+tok);
-			String userToken = JsonWebToken.decode(tok, "Ejemplo", true);
+			String userToken = JsonWebToken.decode(token, "Ejemplo", true);
 			Gson gson = new GsonBuilder().serializeNulls().create();
 			UserDTO res = gson.fromJson(userToken, UserDTO.class);
 			System.out.println("res:::::::"+res);
