@@ -107,10 +107,12 @@ public abstract class _SportService {
 
 			try {
 				String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
-				String userToken = JsonWebToken.decode(token, "Ejemplo", true);
-				Gson gson = new GsonBuilder().serializeNulls().create();
-				UserDTO res = gson.fromJson(userToken, UserDTO.class);
-				String tenant = res.getTenant();
+//				String userToken = JsonWebToken.decode(token, "Ejemplo", true);
+//				Gson gson = new GsonBuilder().serializeNulls().create();
+//				UserDTO res = gson.fromJson(userToken, UserDTO.class);
+//				String tenant = res.getTenant();
+				VerifyToken ver = new VerifyToken();
+				String tenant = ver.getDataToken(token);
 				Map<String, Object> emProperties = new HashMap<String, Object>();
 				emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
 				entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
@@ -147,10 +149,12 @@ public abstract class _SportService {
 			if (currentUser.isAuthenticated()) {
 
 				String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
-				String userToken = JsonWebToken.decode(token, "Ejemplo", true);
-				Gson gson = new GsonBuilder().serializeNulls().create();
-				UserDTO res = gson.fromJson(userToken, UserDTO.class);
-				String tenant = res.getTenant();
+//				String userToken = JsonWebToken.decode(token, "Ejemplo", true);
+//				Gson gson = new GsonBuilder().serializeNulls().create();
+//				UserDTO res = gson.fromJson(userToken, UserDTO.class);
+//				String tenant = res.getTenant();
+				VerifyToken ver = new VerifyToken();
+				String tenant = ver.getDataToken(token);
 				Map<String, Object> emProperties = new HashMap<String, Object>();
 				emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
 				entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
@@ -198,8 +202,8 @@ public abstract class _SportService {
 //			UserDTO res = gson.fromJson(userToken, UserDTO.class);
 //			String tenant = res.getTenant();
 			VerifyToken ver = new VerifyToken();
-			String tenant=ver.getDataToken(token);
-			
+			String tenant = ver.getDataToken(token);
+
 			Map<String, Object> emProperties = new HashMap<String, Object>();
 			emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
 			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
@@ -228,10 +232,12 @@ public abstract class _SportService {
 	public String getSport(@Context HttpHeaders httpHeaders, @PathParam("id") Long id) {
 		try {
 			String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
-			String userToken = JsonWebToken.decode(token, "Ejemplo", true);
-			Gson gson = new GsonBuilder().serializeNulls().create();
-			UserDTO res = gson.fromJson(userToken, UserDTO.class);
-			String tenant = res.getTenant();
+//			String userToken = JsonWebToken.decode(token, "Ejemplo", true);
+//			Gson gson = new GsonBuilder().serializeNulls().create();
+//			UserDTO res = gson.fromJson(userToken, UserDTO.class);
+//			String tenant = res.getTenant();
+			VerifyToken ver = new VerifyToken();
+			String tenant=ver.getDataToken(token);
 			Map<String, Object> emProperties = new HashMap<String, Object>();
 			emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
 			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
@@ -259,10 +265,12 @@ public abstract class _SportService {
 		JSONObject rta = new JSONObject();
 		try {
 			String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
-			String userToken = JsonWebToken.decode(token, "Ejemplo", true);
-			Gson gson = new GsonBuilder().serializeNulls().create();
-			UserDTO res = gson.fromJson(userToken, UserDTO.class);
-			String tenant = res.getTenant();
+//			String userToken = JsonWebToken.decode(token, "Ejemplo", true);
+//			Gson gson = new GsonBuilder().serializeNulls().create();
+//			UserDTO res = gson.fromJson(userToken, UserDTO.class);
+//			String tenant = res.getTenant();
+			VerifyToken ver = new VerifyToken();
+			String tenant=ver.getDataToken(token);
 			Map<String, Object> emProperties = new HashMap<String, Object>();
 			emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
 			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
