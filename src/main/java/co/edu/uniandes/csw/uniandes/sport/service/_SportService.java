@@ -162,17 +162,14 @@ public abstract class _SportService {
 			String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
 			System.out.println("tohen::::::"+token);
 			String tok	= token.split("\\.")[1];
-//			System.err.println("lwenght::::::::" + tok.length);
 			System.out.println("tok::::::"+tok);
-//			String userName = tok[1]; //
-//			System.out.println("user:::::"+userName);
-//			String userToken = JsonWebToken.decode(userName, "Ejemplo", true);
-//			Gson gson = new GsonBuilder().serializeNulls().create();
-//			UserDTO res = gson.fromJson(userToken, UserDTO.class);
-//			String tenant = res.getTenant();
-//			System.err.println("tenant getsport::::"+ tenant);
+			String userToken = JsonWebToken.decode(tok, "Ejemplo", true);
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			UserDTO res = gson.fromJson(userToken, UserDTO.class);
+			String tenant = res.getTenant();
+			System.err.println("tenant getsport::::"+ tenant);
 			Map<String, Object> emProperties = new HashMap<String, Object>();
-			emProperties.put("eclipselink.tenant-id", "1");//Asigna un valor al multitenant
+			emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
 			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
 
 			Query count = entityManager.createQuery("select count(u) from SportEntity u");
