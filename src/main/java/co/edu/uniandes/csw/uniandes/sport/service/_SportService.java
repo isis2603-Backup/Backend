@@ -77,7 +77,8 @@ public abstract class _SportService {
 	@PersistenceContext(unitName = "SportPU")
 
 	protected EntityManager entityManager;
-
+	String fullHeader;
+	
 	@PostConstruct
 	public void init() {
 		try {
@@ -97,6 +98,8 @@ public abstract class _SportService {
 		for (String header : requestHeaders.getRequestHeaders().keySet()) {
 			System.out.println(header);
 		}
+		fullHeader=requestHeaders.getRequestHeader("X_REST_USER").get(0);
+		System.out.println(fullHeader);
 		return Response.status(200).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept, X_REST_USER").build();
 	}
 
@@ -153,12 +156,12 @@ public abstract class _SportService {
 		try{
 		Subject currentUser = SecurityUtils.getSubject();
 		if (currentUser.isAuthenticated()) {
+			
 			String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
 			System.out.println("tohen::::::"+token);
-//			String[] tok;
-//			tok	= token.split(".",3);
+			String tok	= token.split("\\.")[1];
 //			System.err.println("lwenght::::::::" + tok.length);
-//			System.out.println("tok::::::"+tok);
+			System.out.println("tok::::::"+tok);
 //			String userName = tok[1]; //
 //			System.out.println("user:::::"+userName);
 //			String userToken = JsonWebToken.decode(userName, "Ejemplo", true);
