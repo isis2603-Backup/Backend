@@ -106,16 +106,10 @@ public abstract class _SportService {
 
 			try {
 				String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
-				System.out.println("tohen::::::" + token);
-				String tok = token.split("\\.")[1];
-				System.out.println("tok::::::" + tok);
 				String userToken = JsonWebToken.decode(token, "Ejemplo", true);
-				System.out.println("usuario::::::" + userToken);
 				Gson gson = new GsonBuilder().serializeNulls().create();
 				UserDTO res = gson.fromJson(userToken, UserDTO.class);
-				System.out.println("res:::::::" + res);
 				String tenant = res.getTenant();
-				System.err.println("tenant getsport::::" + tenant);
 				Map<String, Object> emProperties = new HashMap<String, Object>();
 				emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
 				entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
@@ -152,17 +146,10 @@ public abstract class _SportService {
 			if (currentUser.isAuthenticated()) {
 
 				String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
-				//String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwidXNlck5hbWUiOiJleGFtcGxldXNlciIsInRlbmFudCI6IjEiLCJwYXNzd29yZCI6ImV4YW1wbGVwYXNzd29yZCIsImVtYWlsIjoibmF0YW4ifQ.-bSjKlpI6QkK1WDuLHdMCxUiE7deKmuwEJ9uYyrszRYrUaa3zZ6xS2SpnYtQWpeWptX4TkPjaF69m5b3_c0UBA";
-				System.out.println("tohen::::::" + token);
-				String tok = token.split("\\.")[1];
-				System.out.println("tok::::::" + tok);
 				String userToken = JsonWebToken.decode(token, "Ejemplo", true);
-				System.out.println("usuario::::::" + userToken);
 				Gson gson = new GsonBuilder().serializeNulls().create();
 				UserDTO res = gson.fromJson(userToken, UserDTO.class);
-				System.out.println("res:::::::" + res);
 				String tenant = res.getTenant();
-				System.err.println("tenant getsport::::" + tenant);
 				Map<String, Object> emProperties = new HashMap<String, Object>();
 				emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
 				entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
@@ -201,9 +188,17 @@ public abstract class _SportService {
 
 	@DELETE
 	@Path("{id}")
-	public Response deleteSport(@PathParam("id") Long id) {
+	public Response deleteSport(@Context HttpHeaders httpHeaders, @PathParam("id") Long id) {
 		JSONObject rta = new JSONObject();
 		try {
+			String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
+			String userToken = JsonWebToken.decode(token, "Ejemplo", true);
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			UserDTO res = gson.fromJson(userToken, UserDTO.class);
+			String tenant = res.getTenant();
+			Map<String, Object> emProperties = new HashMap<String, Object>();
+			emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
+			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
 			entityManager.getTransaction().begin();
 			SportEntity entity = entityManager.find(SportEntity.class, id);
 			rta.put("sport_id", entity.getId());
@@ -226,18 +221,47 @@ public abstract class _SportService {
 
 	@GET
 	@Path("{id}")
-	public String getSport(@PathParam("id") Long id) {
-		Query q = entityManager.createQuery("select u from SportEntity u where u.id=" + id + "");
-		List<SportDTO> sports = q.getResultList();
-		String json = new Gson().toJson(sports);
-		return json;
+	public String getSport(@Context HttpHeaders httpHeaders, @PathParam("id") Long id) {
+		try {
+			String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
+			String userToken = JsonWebToken.decode(token, "Ejemplo", true);
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			UserDTO res = gson.fromJson(userToken, UserDTO.class);
+			String tenant = res.getTenant();
+			Map<String, Object> emProperties = new HashMap<String, Object>();
+			emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
+			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
+			Query q = entityManager.createQuery("select u from SportEntity u where u.id=" + id + "");
+			List<SportDTO> sports = q.getResultList();
+			String json = new Gson().toJson(sports);
+			return json;
+		} catch (Throwable t) {
+			t.printStackTrace();
+			System.out.printf("Error for get from Database....");
+			if (entityManager.getTransaction().isActive()) {
+				entityManager.getTransaction().rollback();
+			}
+
+		} finally {
+			entityManager.clear();
+			entityManager.close();
+		}
+		return null;
 	}
 
 	@PUT
 //        @Path("{id}")
-	public void updateSport(SportDTO sport) {
+	public void updateSport(@Context HttpHeaders httpHeaders, SportDTO sport) {
 		JSONObject rta = new JSONObject();
 		try {
+			String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
+			String userToken = JsonWebToken.decode(token, "Ejemplo", true);
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			UserDTO res = gson.fromJson(userToken, UserDTO.class);
+			String tenant = res.getTenant();
+			Map<String, Object> emProperties = new HashMap<String, Object>();
+			emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
+			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
 			entityManager.getTransaction().begin();
 			SportEntity entity = entityManager.find(SportEntity.class, sport.getId());
 			entity.setMaxAge(sport.getMaxAge());
