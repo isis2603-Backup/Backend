@@ -32,6 +32,7 @@ package co.edu.uniandes.csw.uniandes.sport.service;
 //import co.edu.uniandes.csw.uniandes.sport.logic.api.ISportLogicService;
 import co.edu.uniandes.csw.uniandes.api.JWT.JsonWebToken;
 import co.edu.uniandes.csw.uniandes.api.JWT.JwtHashAlgorithm;
+import co.edu.uniandes.csw.uniandes.api.JWT.VerifyToken;
 import co.edu.uniandes.csw.uniandes.persistence.PersistenceManager;
 import co.edu.uniandes.csw.uniandes.sport.logic.dto.SportDTO;
 import co.edu.uniandes.csw.uniandes.sport.logic.dto.SportPageDTO;
@@ -192,10 +193,13 @@ public abstract class _SportService {
 		JSONObject rta = new JSONObject();
 		try {
 			String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
-			String userToken = JsonWebToken.decode(token, "Ejemplo", true);
-			Gson gson = new GsonBuilder().serializeNulls().create();
-			UserDTO res = gson.fromJson(userToken, UserDTO.class);
-			String tenant = res.getTenant();
+//			String userToken = JsonWebToken.decode(token, "Ejemplo", true);
+//			Gson gson = new GsonBuilder().serializeNulls().create();
+//			UserDTO res = gson.fromJson(userToken, UserDTO.class);
+//			String tenant = res.getTenant();
+			VerifyToken ver = new VerifyToken();
+			String tenant=ver.getDataToken(token);
+			
 			Map<String, Object> emProperties = new HashMap<String, Object>();
 			emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
 			entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
