@@ -121,7 +121,7 @@ public abstract class _LoginService {
 	@Path("/login_test")
 	@OPTIONS
 	public Response cors1(@javax.ws.rs.core.Context HttpHeaders requestHeaders) {
-		return Response.status(200).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept").build();
+		return Response.status(200).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept").build();
 	}
 
 	@POST
