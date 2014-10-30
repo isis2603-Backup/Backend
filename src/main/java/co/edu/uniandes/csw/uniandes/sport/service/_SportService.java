@@ -97,7 +97,7 @@ public abstract class _SportService {
 			System.out.println(header);
 		}
 		System.out.println(fullHeader);
-		return Response.status(200).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept, X_REST_USER").build();
+		return Response.status(200).header("Access-Control-Allow-Origin", "http://localhost:8089").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept, X_REST_USER").build();
 	}
 
 	@POST
@@ -131,7 +131,7 @@ public abstract class _SportService {
 				entityManager.close();
 			}
 
-			return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(rta.toJSONString()).build();
+			return Response.status(200).header("Access-Control-Allow-Origin", "http://localhost:8089").entity(rta.toJSONString()).build();
 
 		} else {
 
@@ -167,14 +167,14 @@ public abstract class _SportService {
 				response.setTotalRecords(regCount);
 				response.setRecords(SportConverter.entity2PersistenceDTOList(q.getResultList()));
 				String json = new Gson().toJson(response);
-				return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(json).build();
+				return Response.status(200).header("Access-Control-Allow-Origin", "http://localhost:8089").entity(json).build();
 			} else {
 
-				return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("You need Authenticated").build();
+				return Response.status(401).header("Access-Control-Allow-Origin", "http://localhost:8089").entity("You need Authenticated").build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("You need Authenticated").build();
+			return Response.status(401).header("Access-Control-Allow-Origin", "http://localhost:8089").entity("You need Authenticated").build();
 		}
 	}
 
@@ -182,7 +182,7 @@ public abstract class _SportService {
 	@OPTIONS
 	@Path("{id}")
 	public Response cors1(@javax.ws.rs.core.Context HttpHeaders requestHeaders) {
-		return Response.status(200).header("Access-Control-Allow-Origin", "*")
+		return Response.status(200).header("Access-Control-Allow-Origin", "http://localhost:8089")
 				.header("Access-Control-Allow-Credentials", "true")
 				.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 				.header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept, X_REST_USER").build();

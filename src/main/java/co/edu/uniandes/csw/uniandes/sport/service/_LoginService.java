@@ -110,7 +110,7 @@ public abstract class _LoginService {
 
 		} catch (Exception e) {
 
-			return Response.status(401).header("Access-Control-Allow-Origin", "*").build();
+			return Response.status(401).header("Access-Control-Allow-Origin", "http://localhost:8089").build();
 		} finally {
 			entityManager.clear();
 			entityManager.close();
@@ -121,7 +121,7 @@ public abstract class _LoginService {
 	@Path("/login_test")
 	@OPTIONS
 	public Response cors1(@javax.ws.rs.core.Context HttpHeaders requestHeaders) {
-		return Response.status(200).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept").build();
+		return Response.status(200).header("Access-Control-Allow-Origin", "http://localhost:8089").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept").build();
 	}
 
 	@POST
