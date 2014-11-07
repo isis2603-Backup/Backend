@@ -97,7 +97,7 @@ public abstract class _SportService {
 			System.out.println(header);
 		}
 		System.out.println(fullHeader);
-		return Response.status(200).header("Access-Control-Allow-Origin", "http://localhost:8089").header("Access-Control-Allow-Credentials", "true").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept, X_REST_USER").build();
+		return Response.status(200).header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept,X_REST_USER").build();
 	}
 
 	@POST
@@ -131,7 +131,7 @@ public abstract class _SportService {
 				entityManager.close();
 			}
 
-			return Response.status(200).header("Access-Control-Allow-Origin", "http://localhost:8089").entity(rta.toJSONString()).build();
+			return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(rta.toJSONString()).build();
 
 		} else {
 
@@ -145,12 +145,10 @@ public abstract class _SportService {
 	public Response getSports(@Context HttpHeaders httpHeaders, @QueryParam("page") Integer page, @QueryParam("maxRecords") Integer maxRecords) {
 //		Imprime el header que ha enviado el usuario desde el cliente
 		try {
-			Subject currentUser = SecurityUtils.getSubject();
-			if (currentUser.isAuthenticated()) {
-
-				String token = httpHeaders.getRequestHeader("X_REST_USER").get(0);
-				VerifyToken ver = new VerifyToken();
-				String tenant = ver.getDataToken(token);
+				
+				Subject currentUser = SecurityUtils.getSubject();
+				UserDTO user = (UserDTO) currentUser.getPrincipal();
+				String tenant = user.getTenant();
 				Map<String, Object> emProperties = new HashMap<String, Object>();
 				emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
 				entityManager = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager(emProperties);
@@ -167,14 +165,11 @@ public abstract class _SportService {
 				response.setTotalRecords(regCount);
 				response.setRecords(SportConverter.entity2PersistenceDTOList(q.getResultList()));
 				String json = new Gson().toJson(response);
-				return Response.status(200).header("Access-Control-Allow-Origin", "http://localhost:8089").entity(json).build();
-			} else {
-
-				return Response.status(401).header("Access-Control-Allow-Origin", "http://localhost:8089").entity("You need Authenticated").build();
-			}
-		} catch (Exception e) {
+				return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(json).build();
+			 
+		}catch (Exception e) {
 			e.printStackTrace();
-			return Response.status(401).header("Access-Control-Allow-Origin", "http://localhost:8089").entity("You need Authenticated").build();
+			return Response.status(401).header("Access-Control-Allow-Origin", "*").entity("You need Authenticated").build();
 		}
 	}
 
@@ -182,7 +177,7 @@ public abstract class _SportService {
 	@OPTIONS
 	@Path("{id}")
 	public Response cors1(@javax.ws.rs.core.Context HttpHeaders requestHeaders) {
-		return Response.status(200).header("Access-Control-Allow-Origin", "http://localhost:8089")
+		return Response.status(200).header("Access-Control-Allow-Origin", "*")
 				.header("Access-Control-Allow-Credentials", "true")
 				.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 				.header("Access-Control-Allow-Headers", "AUTHORIZATION, content-type, accept, X_REST_USER").build();

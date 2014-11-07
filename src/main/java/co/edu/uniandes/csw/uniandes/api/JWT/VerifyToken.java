@@ -28,5 +28,19 @@ public class VerifyToken {
 			return "error getData";
 		}
 	}
+	
+	public static UserDTO getDataUser(String token) {
+
+		try {
+			String userToken = JsonWebToken.decode(token, "Ejemplo", true);
+			Gson gson = new GsonBuilder().serializeNulls().create();
+			UserDTO res = gson.fromJson(userToken, UserDTO.class);
+			
+			return res;
+		} catch (Throwable t) {
+			t.printStackTrace();
+			return null;
+		}
+	}
 
 }
