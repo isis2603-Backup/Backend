@@ -34,6 +34,7 @@ import co.edu.uniandes.csw.uniandes.api.JWT.JsonWebToken;
 import co.edu.uniandes.csw.uniandes.api.JWT.JwtHashAlgorithm;
 import co.edu.uniandes.csw.uniandes.api.JWT.VerifyToken;
 import co.edu.uniandes.csw.uniandes.persistence.PersistenceManager;
+import co.edu.uniandes.csw.uniandes.seguridad.Usuario;
 import co.edu.uniandes.csw.uniandes.sport.logic.dto.SportDTO;
 import co.edu.uniandes.csw.uniandes.sport.logic.dto.SportPageDTO;
 import co.edu.uniandes.csw.uniandes.sport.persistence.converter.SportConverter;
@@ -147,7 +148,7 @@ public abstract class _SportService {
 		try {
 				
 				Subject currentUser = SecurityUtils.getSubject();
-				UserDTO user = (UserDTO) currentUser.getPrincipal();
+				Usuario user = (Usuario) currentUser.getPrincipal();
 				String tenant = user.getTenant();
 				Map<String, Object> emProperties = new HashMap<String, Object>();
 				emProperties.put("eclipselink.tenant-id", tenant);//Asigna un valor al multitenant
